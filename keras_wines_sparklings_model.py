@@ -32,9 +32,10 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
 
-# dimensions of our images.
+# Dimensions of our images.
 img_width, img_height = 113, 270
 
+# Some constants
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
 nb_train_samples = 650
@@ -47,6 +48,7 @@ if K.image_data_format() == 'channels_first':
 else:
     input_shape = (img_width, img_height, 3)
 
+# Neural network construction
 model = Sequential()
 model.add(Conv2D(32, (3, 3), input_shape=input_shape))
 model.add(Activation('relu'))
@@ -82,18 +84,21 @@ train_datagen = ImageDataGenerator(
 # only rescaling
 test_datagen = ImageDataGenerator(rescale=1. / 255)
 
+# Generating train dataset
 train_generator = train_datagen.flow_from_directory(
     train_data_dir,
     target_size=(img_width, img_height),
     batch_size=batch_size,
     class_mode='binary')
 
+# Generating validation dataset
 validation_generator = test_datagen.flow_from_directory(
     validation_data_dir,
     target_size=(img_width, img_height),
     batch_size=batch_size,
     class_mode='binary')
 
+# Training and testing the model
 model.fit_generator(
     train_generator,
     steps_per_epoch=nb_train_samples // batch_size,
@@ -101,4 +106,6 @@ model.fit_generator(
     validation_data=validation_generator,
     validation_steps=nb_validation_samples // batch_size)
 
-model.save_weights('first_try.h5')
+# Saving model and weights for further loading/analysis/explanation
+model.save_weights('wines_sparklings_weights.h5')
+model.save('wines_sparklings_model.h5')
