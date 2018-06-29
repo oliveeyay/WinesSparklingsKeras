@@ -107,5 +107,5 @@ model.fit_generator(
     validation_steps=nb_validation_samples // batch_size)
 
 # Saving model and weights for further loading/analysis/explanation
-model.save_weights('wines_sparklings_weights.h5')
-model.save('wines_sparklings_model.h5')
+model.save_weights('keras_wines_sparklings_weights.h5')
+model.save('keras_wines_sparklings_model.h5')
